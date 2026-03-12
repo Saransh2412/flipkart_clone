@@ -69,7 +69,11 @@ const placeOrder = async (userId, shippingAddress) => {
     User.findByPk(userId)
       .then(userRow => {
         if (userRow && userRow.email) {
-          sendOrderConfirmationEmail(userRow.email, orderId, totalPrice, itemDetails);
+          console.log('📨 Sending order email to:', userRow.email);
+          sendOrderConfirmationEmail(userRow.email, orderId, totalPrice, itemDetails)
+            .catch(err => console.error('⚠️ Email send failed:', err.message));
+        } else {
+          console.log('⚠️ No user/email found for userId:', userId);
         }
       })
       .catch(err => console.error('⚠️ Email lookup failed:', err.message));
