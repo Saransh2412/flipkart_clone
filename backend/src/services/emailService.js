@@ -69,7 +69,7 @@ const buildOrderEmailHTML = (orderId, amount, items) => {
 const sendOrderConfirmationEmail = async (email, orderId, amount, items) => {
   try {
     const { data, error } = await getResendClient().emails.send({
-      from: 'Flipkart Clone <onboarding@resend.dev>',
+      from: 'Flipkart Clone <orders@mail.saranshh.me>',
       to: [email],
       subject: `Order Confirmed - ${orderId}`,
       html: buildOrderEmailHTML(orderId, amount, items),
