@@ -67,7 +67,7 @@ export default function Wishlist() {
             <div key={item.wishlist_id} className="wishlist-card slide-up">
               <Link to={`/product/${item.id}`} className="wishlist-card-image-wrap">
                 <img
-                  src={`http://localhost:5000/api/images/proxy?url=${encodeURIComponent(item.image || `https://via.placeholder.com/200x200?text=${encodeURIComponent(item.name)}`)}`}
+                  src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/images/proxy?url=${encodeURIComponent(item.image || `https://via.placeholder.com/200x200?text=${encodeURIComponent(item.name)}`)}`}
                   alt={item.name}
                   className="wishlist-card-image"
                 />

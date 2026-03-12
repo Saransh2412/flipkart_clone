@@ -72,7 +72,7 @@ export default function ProductDetail() {
     ? product.images
     : [`https://via.placeholder.com/500x500?text=${encodeURIComponent(product.name)}`];
 
-  const images = rawImages.map(img => `http://localhost:5000/api/images/proxy?url=${encodeURIComponent(img)}`);
+  const images = rawImages.map(img => `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/images/proxy?url=${encodeURIComponent(img)}`);
 
   const discount = Math.floor(Math.random() * 30) + 10;
   const originalPrice = (product.price / (1 - discount / 100)).toFixed(2);

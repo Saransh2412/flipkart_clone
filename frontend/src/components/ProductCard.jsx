@@ -43,7 +43,7 @@ export default function ProductCard({ product }) {
       ? product.images[0]
       : 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop';
   
-  const imageUrl = `http://localhost:5000/api/images/proxy?url=${encodeURIComponent(rawImageUrl)}`;
+  const imageUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/images/proxy?url=${encodeURIComponent(rawImageUrl)}`;
 
   const discount = Math.floor(Math.random() * 30) + 10;
   const originalPrice = (product.price / (1 - discount / 100)).toFixed(2);

@@ -101,8 +101,8 @@ export default function Cart() {
             {cartItems.map((item) => (
               <div key={item.cart_item_id} className="cart-item slide-up">
                 <Link to={`/product/${item.id}`} className="cart-item-image-wrap">
-                  <img
-                    src={`http://localhost:5000/api/images/proxy?url=${encodeURIComponent(item.image || `https://via.placeholder.com/120x120?text=${encodeURIComponent(item.name)}`)}`}
+                <img
+                    src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/images/proxy?url=${encodeURIComponent(item.image || `https://via.placeholder.com/200x200?text=${encodeURIComponent(item.name)}`)}`}
                     alt={item.name}
                     className="cart-item-image"
                   />
