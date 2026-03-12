@@ -1,6 +1,12 @@
 const { Resend } = require('resend');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend;
+const getResendClient = () => {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+};
 
 const buildOrderEmailHTML = (orderId, amount, items) => {
   const itemRows = (items || []).map(item => `
@@ -62,7 +68,7 @@ const buildOrderEmailHTML = (orderId, amount, items) => {
 
 const sendOrderConfirmationEmail = async (email, orderId, amount, items) => {
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: 'Flipkart Clone <onboarding@resend.dev>',
       to: [email],
       subject: `Order Confirmed - ${orderId}`,
