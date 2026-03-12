@@ -1,16 +1,6 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  // Force IPv4 — Render free tier does not support outbound IPv6
-  family: 4,
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const buildOrderEmailHTML = (orderId, amount, items) => {
   const itemRows = (items || []).map(item => `
@@ -72,15 +62,19 @@ const buildOrderEmailHTML = (orderId, amount, items) => {
 
 const sendOrderConfirmationEmail = async (email, orderId, amount, items) => {
   try {
-    const mailOptions = {
-      from: `"Flipkart Clone" <${process.env.EMAIL_USER}>`,
-      to: email,
+    const { data, error } = await resend.emails.send({
+      from: 'Flipkart Clone <onboarding@resend.dev>',
+      to: [email],
       subject: `Order Confirmed - ${orderId}`,
       html: buildOrderEmailHTML(orderId, amount, items),
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('📧 Order confirmation email sent:', info.response);
+    if (error) {
+      console.error('⚠️ Resend error:', error);
+      return;
+    }
+
+    console.log('📧 Order confirmation email sent:', data.id);
   } catch (error) {
     // Log but NEVER throw — order must succeed even if email fails
     console.error('⚠️ Failed to send order confirmation email:', error.message);
