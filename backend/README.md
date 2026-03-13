@@ -62,3 +62,43 @@ The project follows a standard **Controller-Service-Repository** paradigm (in ou
 * Use PM2 for starting production builds. E.g., `pm2 start src/server.js --name flipkart-api`.
 * Set up a Reverse Proxy (like NGINX on an Ubuntu VM) to expose `localhost:5000` via a standard secure connection.
 * Connect a managed Postgres DB from a Cloud provider (like AWS RDS or Neon).
+
+## Render Deployment Checklist
+
+Use this checklist for stable production behavior.
+
+### Required Render environment variables
+
+```env
+FRONTEND_URL=https://flipkart-clone-hazel-nu.vercel.app,https://flipkart-clone.saranshh.me
+NODE_ENV=production
+```
+
+### Health endpoint
+
+- Endpoint: `GET /health`
+- Expected response: `200` with JSON body
+- Readiness endpoint: `GET /ready` (checks API process + database connectivity)
+
+### Uptime monitor settings
+
+- URL: `https://flipkart-clone-w0a3.onrender.com/health`
+- Method: `GET` (preferred over `HEAD`)
+- Interval: `5 min`
+- Timeout: `20-30s`
+- Failure threshold: `2-3`
+
+### Incident triage (fast)
+
+- If you see `521`, treat it as origin availability issue first.
+- If browser shows CORS missing header at same time, that is usually a secondary symptom of edge HTML error response.
+- Confirm API CORS quickly:
+
+```bash
+curl -i -H "Origin: https://flipkart-clone.saranshh.me" "https://flipkart-clone-w0a3.onrender.com/api/products?page=1&limit=1"
+```
+
+### Request logging
+
+- Structured request logs are enabled by default.
+- Disable by setting `REQUEST_LOGGING=false` in Render env vars.
