@@ -7,7 +7,14 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     ssl: {
       require: true,
       rejectUnauthorized: false
-    }
+    },
+    keepAlive: true,
+  },
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
   },
   logging: false, // Set to console.log to see SQL queries
 });
