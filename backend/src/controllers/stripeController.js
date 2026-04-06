@@ -33,6 +33,9 @@ const createCheckoutSession = async (req, res, next) => {
       };
     });
 
+    const frontendUrls = (process.env.FRONTEND_URL || 'http://localhost:5173').split(',');
+    const primaryFrontendUrl = frontendUrls[0].trim();
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       shipping_address_collection: {
@@ -40,8 +43,8 @@ const createCheckoutSession = async (req, res, next) => {
       },
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/cart`,
+      success_url: `${primaryFrontendUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${primaryFrontendUrl}/cart`,
       client_reference_id: userId.toString(),
     });
 
