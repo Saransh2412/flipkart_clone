@@ -33,8 +33,10 @@ const createCheckoutSession = async (req, res, next) => {
       };
     });
 
-    const frontendUrls = (process.env.FRONTEND_URL || 'http://localhost:5173').split(',');
-    const primaryFrontendUrl = frontendUrls[0].trim();
+    const frontendUrls = (process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(u => u.trim());
+    const requestOrigin = req.headers.origin;
+    // Route the user right back to the exact domain they came from (if it's in our allowed list)
+    const primaryFrontendUrl = frontendUrls.includes(requestOrigin) ? requestOrigin : frontendUrls[0];
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
