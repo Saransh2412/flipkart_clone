@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getWishlist, removeFromWishlist, addToCart } from '../services/api';
 import { toast } from 'react-toastify';
 import { FiHeart, FiTrash2, FiShoppingCart } from 'react-icons/fi';
+import { getOptimizedImage } from '../utils/imageUtils';
 import './Wishlist.css';
 
 export default function Wishlist() {
@@ -67,7 +68,7 @@ export default function Wishlist() {
             <div key={item.wishlist_id} className="wishlist-card slide-up">
               <Link to={`/product/${item.id}`} className="wishlist-card-image-wrap">
                 <img
-                  src={item.image || `https://via.placeholder.com/200x200?text=${encodeURIComponent(item.name)}`}
+                  src={getOptimizedImage(item.image || `https://via.placeholder.com/200x200?text=${encodeURIComponent(item.name)}`, 400)}
                   alt={item.name}
                   className="wishlist-card-image"
                 />

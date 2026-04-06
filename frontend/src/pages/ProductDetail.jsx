@@ -4,6 +4,7 @@ import { getProductById, addToCart, addToWishlist } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { FiShoppingCart, FiHeart, FiChevronRight, FiCheck, FiX } from 'react-icons/fi';
+import { getOptimizedImage } from '../utils/imageUtils';
 import './ProductDetail.css';
 
 export default function ProductDetail() {
@@ -100,7 +101,7 @@ export default function ProductDetail() {
         {/* Image Gallery */}
         <div className="pd-images">
           <div className="pd-main-image-wrap">
-            <img src={images[selectedImage]} alt={product.name} className="pd-main-image" />
+            <img src={getOptimizedImage(images[selectedImage], 800)} alt={product.name} className="pd-main-image" />
           </div>
           {images.length > 1 && (
             <div className="pd-thumbs">
@@ -110,7 +111,7 @@ export default function ProductDetail() {
                   className={`pd-thumb ${i === selectedImage ? 'active' : ''}`}
                   onClick={() => setSelectedImage(i)}
                 >
-                  <img src={img} alt="" />
+                  <img src={getOptimizedImage(img, 150)} alt="" />
                 </button>
               ))}
             </div>

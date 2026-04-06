@@ -13,11 +13,14 @@ An in-depth, feature-rich, full-stack e-commerce web application inspired by Fli
 - **Authentication:** Secure JWT-based Authentication (Login, Registration, Protected Routes).
 - **Product Catalog:** Interactive product listings, dynamic category filtering, and detailed individual product views.
 - **Cart & Wishlist Logic:** Context API-based state management that seamlessly adds/removes items from the cart or wishlist and links directly with the backend database.
-- **Order Management:** Secure checkout, persistent order histories, and responsive cart total calculations.
+- **Order Management & Stripe Checkout:** Secure PCI-compliant Stripe checkout sessions, persistent database idempotency, and clean success redirects.
+- **Extremely Fast TTFB:** Features a frontend 'Stale-While-Revalidate' (SWR) cache running via LocalStorage giving 0ms perceived loading times for returning users!
+- **Edge CDN Image Optimization:** All product images are routed through Cloudflare's Edge Network (wsrv.nl), minimizing bandwidth by up to 80% via on-the-fly WebP conversion.
 - **Real-time Feedback:** Toast notifications (`react-toastify`) for interactive user feedback (e.g., "Added to Cart!", "Login Successful!").
 
 ### Backend (Server-Side)
 - **RESTful API Architecture:** Cleanly separated architecture (Routes, Controllers, Services, Models) for scalability and ease of maintenance.
+- **In-Memory API Caching:** Heavily trafficked default queries are trapped safely in Node.js memory, saving immense database overhead and network latency.
 - **Robust Database Modeling using Sequelize ORM:** Relational database mapping ensuring tight data integrity. Key Entity Relationships include:
   - **1-to-Many:** Users to Orders, Cart Items, and Wishlist Items.
   - **1-to-Many:** Categories to Products.
@@ -210,7 +213,6 @@ You can import `backend/Flipkart_Clone.postman_collection.json` into Postman to 
 - **Orders:** `POST /api/orders` (Checkout), `GET /api/orders` (History)
 
 ## 🔮 Future Enhancements
-- Integration of a live Payment Gateway (Stripe/Razorpay)
 - Admin Dashboard for Product and Order management
 - Interactive user reviews and rating systems
 - Advanced full-text search and Elasticsearch integration

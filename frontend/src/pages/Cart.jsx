@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getCart, updateCartQty, removeFromCart, placeOrder } from '../services/api';
+import { getCart, updateCartQty, removeFromCart, createCheckoutSession } from '../services/api';
 import { toast } from 'react-toastify';
 import { FiTrash2, FiMinus, FiPlus, FiShoppingBag, FiMapPin } from 'react-icons/fi';
+import { getOptimizedImage } from '../utils/imageUtils';
 import './Cart.css';
 
 export default function Cart() {
@@ -49,17 +50,15 @@ export default function Cart() {
     }
   };
 
-  const handlePlaceOrder = async (e) => {
-    e.preventDefault();
-    if (!shippingAddress.trim()) return toast.warn('Please enter a shipping address');
+  const handleStripeCheckout = async () => {
     setPlacing(true);
     try {
-      const { data } = await placeOrder(shippingAddress);
-      toast.success(`Order placed! ID: ${data.orderId}`);
-      navigate('/orders');
+      const { data } = await createCheckoutSession();
+      if (data.url) {
+        window.location.href = data.url;
+      }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to place order');
-    } finally {
+      toast.error(err.response?.data?.message || 'Failed to initiate checkout');
       setPlacing(false);
     }
   };
@@ -102,7 +101,7 @@ export default function Cart() {
               <div key={item.cart_item_id} className="cart-item slide-up">
                 <Link to={`/product/${item.id}`} className="cart-item-image-wrap">
                 <img
-                    src={item.image || `https://via.placeholder.com/200x200?text=${encodeURIComponent(item.name)}`}
+                    src={getOptimizedImage(item.image || `https://via.placeholder.com/200x200?text=${encodeURIComponent(item.name)}`, 300)}
                     alt={item.name}
                     className="cart-item-image"
                   />
@@ -159,32 +158,13 @@ export default function Cart() {
               <span>₹{totalAmount.toLocaleString('en-IN')}</span>
             </div>
 
-            {!showCheckout ? (
-              <button
-                className="btn-primary cart-checkout-btn"
-                onClick={() => setShowCheckout(true)}
-              >
-                Place Order
-              </button>
-            ) : (
-              <form onSubmit={handlePlaceOrder} className="cart-checkout-form scale-in">
-                <div className="cart-address-group">
-                  <FiMapPin size={16} className="cart-address-icon" />
-                  <input
-                    type="text"
-                    placeholder="Enter shipping address..."
-                    value={shippingAddress}
-                    onChange={(e) => setShippingAddress(e.target.value)}
-                    className="cart-address-input"
-                    id="shipping-address"
-                    required
-                  />
-                </div>
-                <button type="submit" className="btn-primary cart-checkout-btn" disabled={placing}>
-                  {placing ? 'Placing Order...' : 'Confirm Order'}
-                </button>
-              </form>
-            )}
+            <button
+              className="btn-primary cart-checkout-btn"
+              onClick={handleStripeCheckout}
+              disabled={placing}
+            >
+              {placing ? 'Redirecting...' : 'Checkout'}
+            </button>
           </div>
         </div>
       )}

@@ -60,7 +60,7 @@ const buildOrderEmailHTML = (orderId, amount, items) => {
         </p>
       </div>
       <p style="color: #aaa; font-size: 11px; text-align: center; margin-top: 12px;">
-        This is an automated email from Flipkart Clone. Please do not reply.
+        This is an automated email from ShopSphere. Please do not reply.
       </p>
     </div>
   `;
@@ -69,7 +69,7 @@ const buildOrderEmailHTML = (orderId, amount, items) => {
 const sendOrderConfirmationEmail = async (email, orderId, amount, items) => {
   try {
     const { data, error } = await getResendClient().emails.send({
-      from: 'Flipkart Clone <orders@mail.saranshh.me>',
+      from: 'ShopSphere <orders@mail.saranshh.me>',
       to: [email],
       subject: `Order Confirmed - ${orderId}`,
       html: buildOrderEmailHTML(orderId, amount, items),

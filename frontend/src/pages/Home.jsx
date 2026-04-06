@@ -4,6 +4,7 @@ import { getProducts } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
+import { getOptimizedImage } from '../utils/imageUtils';
 import './Home.css';
 
 // Dynamic banners will be populated below
@@ -11,19 +12,28 @@ import './Home.css';
 
 export default function Home() {
   const { user } = useAuth();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(() => {
+    // Instantly inject stored products synchronously 
+    const cached = localStorage.getItem('flipkart_home_products');
+    return cached ? JSON.parse(cached) : [];
+  });
+  // If we already have products loaded, don't show the loading skeleton at all
+  const [loading, setLoading] = useState(() => !localStorage.getItem('flipkart_home_products'));
   const [currentBannerGroup, setCurrentBannerGroup] = useState(0);
 
   useEffect(() => {
-    // Fetch a bit more products to fill multiple sections
+    // SWR: Fetch fresh data silently behind the scenes
     getProducts({ page: 1, limit: 20 })
       .then(({ data }) => {
-        // Randomize the products slightly for variety
         const shuffled = (data.products || []).sort(() => 0.5 - Math.random());
         setProducts(shuffled);
+        localStorage.setItem('flipkart_home_products', JSON.stringify(shuffled));
       })
-      .catch(() => setProducts([]))
+      .catch(() => {
+        if (!localStorage.getItem('flipkart_home_products')) {
+          setProducts([]);
+        }
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -61,7 +71,7 @@ export default function Home() {
                   <div className="banner-3-grid">
                      {group.map(p => (
                        <Link key={p.id} to={`/product/${p.id}`} className="banner-link">
-                         <img src={p.images?.[0] || 'https://via.placeholder.com/800'} alt={p.name} className="banner-img" />
+                         <img src={getOptimizedImage(p.images?.[0] || 'https://via.placeholder.com/800', 800)} alt={p.name} className="banner-img" />
                        </Link>
                      ))}
                   </div>
