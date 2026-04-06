@@ -15,7 +15,7 @@ import Signup from './pages/Signup';
 import Cart from './pages/Cart';
 import Wishlist from './pages/Wishlist';
 import Orders from './pages/Orders';
-
+import CheckoutSuccess from './pages/CheckoutSuccess';
 export default function App() {
   return (
     <AuthProvider>
@@ -50,6 +50,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Orders />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/checkout/success"
+                element={
+                  <ProtectedRoute>
+                    <CheckoutSuccess />
                   </ProtectedRoute>
                 }
               />

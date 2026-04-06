@@ -6,6 +6,7 @@ const Order = sequelize.define('Order', {
   user_id: { type: DataTypes.INTEGER, allowNull: false },
   total_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
   shipping_address: { type: DataTypes.TEXT, allowNull: false },
+  stripe_session_id: { type: DataTypes.STRING(255), allowNull: true, unique: true },
   status: { type: DataTypes.STRING(50), defaultValue: 'Pending' },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
 }, {

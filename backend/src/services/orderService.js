@@ -2,7 +2,7 @@ const { sequelize, Order, OrderItem, CartItem, Product, User } = require('../mod
 const { generateOrderId } = require('../utils/generateOrderId');
 const { sendOrderConfirmationEmail } = require('./emailService');
 
-const placeOrder = async (userId, shippingAddress) => {
+const placeOrder = async (userId, shippingAddress, stripeSessionId = null) => {
   const t = await sequelize.transaction();
 
   try {
@@ -29,6 +29,7 @@ const placeOrder = async (userId, shippingAddress) => {
       user_id: userId,
       total_price: totalPrice,
       shipping_address: shippingAddress,
+      stripe_session_id: stripeSessionId,
       status: 'Pending'
     }, { transaction: t });
 

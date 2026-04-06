@@ -65,6 +65,7 @@ app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/wishlist', require('./routes/wishlistRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/images', require('./routes/imageRoutes'));
+app.use('/api/stripe', require('./routes/stripeRoutes'));
 
 // Basic route
 app.get('/', (req, res) => {

@@ -45,4 +45,8 @@ export const placeOrder = (shippingAddress) =>
 export const getOrders = () => API.get('/orders');
 export const getOrderById = (id) => API.get(`/orders/${id}`);
 
+// ── Stripe ──
+export const createCheckoutSession = () => API.post('/stripe/create-checkout-session');
+export const verifySession = (sessionId) => API.post('/stripe/verify-session', { session_id: sessionId }).then(res => { window.dispatchEvent(new Event('cartUpdated')); return res; });
+
 export default API;
