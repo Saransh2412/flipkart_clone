@@ -1,5 +1,8 @@
 # Flipkart Clone - Full-Stack E-Commerce Platform 🛒
 
+> [!IMPORTANT]
+> **Educational Project**: This application is a clone of Flipkart built for educational and portfolio purposes only. No real transactions are processed, and it is not affiliated with or endorsed by Flipkart.
+
 An in-depth, feature-rich, full-stack e-commerce web application inspired by Flipkart. Built with a modern tech stack featuring React.js (Vite), Node.js, Express, Sequelize ORM, and PostgreSQL.
 
 ![Database Schema](./db_schema.png)
