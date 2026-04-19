@@ -161,7 +161,7 @@
 
 /* Allow horizontal scrolling limits inside specific parent */
 .product-card-white-wrapper .product-card-title {
-  -webkit-line-clamp: 1; /* Match flipkart red section compact title */
+  -webkit-line-clamp: 1; /* Compact title for featured sections */
 }
 .product-card-white-wrapper .product-card-pricing {
   justify-content: center; /* Center text in this specific view */

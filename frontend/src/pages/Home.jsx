@@ -14,11 +14,11 @@ export default function Home() {
   const { user } = useAuth();
   const [products, setProducts] = useState(() => {
     // Instantly inject stored products synchronously 
-    const cached = localStorage.getItem('flipkart_home_products');
+    const cached = localStorage.getItem('shopsphere_home_products');
     return cached ? JSON.parse(cached) : [];
   });
   // If we already have products loaded, don't show the loading skeleton at all
-  const [loading, setLoading] = useState(() => !localStorage.getItem('flipkart_home_products'));
+  const [loading, setLoading] = useState(() => !localStorage.getItem('shopsphere_home_products'));
   const [showWakeUpMessage, setShowWakeUpMessage] = useState(false);
   const [currentBannerGroup, setCurrentBannerGroup] = useState(0);
 
@@ -37,19 +37,19 @@ export default function Home() {
           if (prevProducts.length === 0) {
             // First time load: Shuffle for variety
             const shuffled = [...rawProducts].sort(() => 0.5 - Math.random());
-            localStorage.setItem('flipkart_home_products', JSON.stringify(shuffled));
+            localStorage.setItem('shopsphere_home_products', JSON.stringify(shuffled));
             return shuffled;
           } else {
             // Smooth Update: Keep the existing order, but update the data (price, stock, etc.)
             const freshMap = new Map(rawProducts.map(p => [p.id, p]));
             const updatedProducts = prevProducts.map(p => freshMap.get(p.id) || p);
-            localStorage.setItem('flipkart_home_products', JSON.stringify(updatedProducts));
+            localStorage.setItem('shopsphere_home_products', JSON.stringify(updatedProducts));
             return updatedProducts;
           }
         });
       })
       .catch(() => {
-        if (!localStorage.getItem('flipkart_home_products')) {
+        if (!localStorage.getItem('shopsphere_home_products')) {
           setProducts([]);
         }
       })

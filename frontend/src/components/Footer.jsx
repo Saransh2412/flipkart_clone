@@ -35,7 +35,7 @@ export default function Footer() {
         <div className="footer-col">
           <h4>MAIL US</h4>
           <p className="footer-text">
-            Flipkart Clone Pvt Ltd.,<br />
+            ShopSphere Pvt Ltd.,<br />
             Buildings Alyssa, Begonia &<br />
             Clove Embassy Tech Village,<br />
             Bangalore, 560103
@@ -44,7 +44,7 @@ export default function Footer() {
       </div>
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
-          <span>© 2026 Flipkart Clone. All rights reserved.</span>
+          <span>© 2026 ShopSphere. All rights reserved.</span>
           <span>Made with ❤️ for learning purposes</span>
         </div>
       </div>

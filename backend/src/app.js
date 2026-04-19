@@ -72,7 +72,7 @@ app.use('/api/stripe', require('./routes/stripeRoutes'));
 
 // Basic route
 app.get('/', (req, res) => {
-  res.send('Flipkart Backend API is running...');
+  res.send('ShopSphere Backend API is running...');
 });
 
 // HEALTH CHECK: Used by Uptime Bots (every 5-10 min). 

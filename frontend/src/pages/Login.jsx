@@ -78,7 +78,7 @@ export default function Login() {
               {loading ? 'Logging in...' : 'Login'}
             </button>
             <p className="auth-switch">
-              New to Flipkart? <Link to="/signup">Create an account</Link>
+              New to ShopSphere? <Link to="/signup">Create an account</Link>
             </p>
           </form>
         </div>

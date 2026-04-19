@@ -1,4 +1,4 @@
-# Flipkart Clone - Stripe & CDN Architecture Flow
+# ShopSphere - Stripe & CDN Architecture Flow
 
 This document explains two core optimizations integrated into the application: the **Stripe Payment Gateway Checkout Flow** and the **Cloudflare Edge CDN (wsrv.nl) Image Delivery**.
 
@@ -64,7 +64,7 @@ To complement the image CDN and provide a true "Amazon-like" instant loading exp
 ### The Flow:
 
 1. **Frontend "Stale-While-Revalidate" (`Home.jsx`)**:
-   - The React `useState` hooks are initialized *synchronously* by parsing the `flipkart_home_products` key from the browser's `localStorage`.
+   - The React `useState` hooks are initialized *synchronously* by parsing the `shopsphere_home_products` key from the browser's `localStorage`.
    - The `loading` state is initialized to `false` if local storage exists.
    - **Result**: When the user returns to the Home Page, React bypasses the skeleton loader and renders the complete UI with product data and images instantly (**0ms latency**).
    - *Behind the scenes*: A `useEffect` hook triggers `getProducts()` silently in the background, shuffling the data and saving the *fresh* data back into `localStorage` so the next visit is always up to date.

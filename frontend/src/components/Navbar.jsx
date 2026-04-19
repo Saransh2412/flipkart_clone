@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiSearch, FiShoppingCart, FiUser, FiChevronDown, FiMapPin, FiBox, FiHeart, FiLogOut, FiAlignJustify, FiMoreVertical, FiNavigation } from 'react-icons/fi';
+import { FiSearch, FiShoppingCart, FiUser, FiChevronDown, FiMapPin, FiBox, FiHeart, FiLogOut, FiAlignJustify, FiMoreVertical } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { getCart } from '../services/api';
 import { toast } from 'react-toastify';
@@ -130,20 +130,8 @@ export default function Navbar() {
         <div className="navbar-inner container top-bar-inner">
           <div className="top-bar-left">
             <Link to="/" className="top-brand-pill active">
-              <span className="star-icon" style={{ display: 'flex' }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2874f0" stroke="#2874f0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span> Flipkart
+              <span className="star-icon" style={{ display: 'flex' }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2874f0" stroke="#2874f0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span> ShopSphere
             </Link>
-            <div className="top-brand-pill disabled">
-              <FiBox size={16} color="#db1515" /> <span>Minutes</span>
-              <span className="brand-coming-soon">Coming soon</span>
-            </div>
-            <div className="top-brand-pill disabled">
-              <FiNavigation size={16} color="#f47f40" /> <span>Travel</span>
-              <span className="brand-coming-soon">Coming soon</span>
-            </div>
-            <div className="top-brand-pill disabled">
-              <FiShoppingCart size={16} color="#717478" /> <span>Grocery</span>
-              <span className="brand-coming-soon">Coming soon</span>
-            </div>
           </div>
           {user && (
             <div className="top-bar-right" ref={locationPopupRef} style={{ position: 'relative' }}>
@@ -199,7 +187,7 @@ export default function Navbar() {
           
           {/* Logo (hidden on large screens in new design, kept for mobile fallback if needed, but styling will handle it) */}
           <Link to="/" className="navbar-logo-mobile">
-            <span>Flipkart</span>
+            <span>ShopSphere</span>
           </Link>
 
           {/* Search */}

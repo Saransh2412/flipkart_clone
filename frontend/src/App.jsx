@@ -17,6 +17,7 @@ import Cart from './pages/Cart';
 import Wishlist from './pages/Wishlist';
 import Orders from './pages/Orders';
 import CheckoutSuccess from './pages/CheckoutSuccess';
+import Profile from './pages/Profile';
 
 // Helper to scroll to top on page change
 function ScrollToTop() {
@@ -32,9 +33,7 @@ export default function App() {
     <AuthProvider>
       <Router>
         <ScrollToTop />
-        <div className="demo-notice-bar">
-          Educational Project: This is a Flipkart Clone for demo purposes only. No real orders are processed.
-        </div>
+
         <div className="app">
           <Navbar />
           <main className="app-main">
@@ -73,6 +72,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <CheckoutSuccess />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />
