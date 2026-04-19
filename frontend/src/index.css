@@ -50,6 +50,29 @@ body {
   min-height: 100vh;
 }
 
+/* ── Top Demo Notice ── */
+.demo-notice-bar {
+  background: var(--text-primary);
+  color: var(--white);
+  font-size: 11px;
+  text-align: center;
+  padding: 6px 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+@media (max-width: 480px) {
+  .demo-notice-bar {
+    font-size: 9px;
+    padding: 4px 8px;
+  }
+}
+
 a {
   text-decoration: none;
   color: inherit;

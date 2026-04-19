@@ -32,6 +32,9 @@ export default function App() {
     <AuthProvider>
       <Router>
         <ScrollToTop />
+        <div className="demo-notice-bar">
+          Educational Project: This is a Flipkart Clone for demo purposes only. No real orders are processed.
+        </div>
         <div className="app">
           <Navbar />
           <main className="app-main">
