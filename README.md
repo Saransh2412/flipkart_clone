@@ -10,7 +10,7 @@
 
 > A production-grade, full-stack e-commerce web application with **Stripe payments**, **transactional emails**, **edge-optimised images**, and a **sub-200 ms perceived load time** — built from the ground up with React, Node.js, and PostgreSQL.
 
-**🔗 [Live Demo](https://flipkart-clone.saranshh.me)** &nbsp;|&nbsp; **📄 [PRD](./PRD.md)** &nbsp;|&nbsp; **📬 [API Collection (Postman)](./backend/ShopSphere.postman_collection.json)**
+**🔗 [Live Demo](https://ecom.saranshh.me)** &nbsp;|&nbsp; **📄 [PRD](./PRD.md)** &nbsp;|&nbsp; **📬 [API Collection (Postman)](./backend/ShopSphere.postman_collection.json)**
 
 ---
 
