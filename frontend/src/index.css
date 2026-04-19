@@ -177,6 +177,34 @@ input, select, textarea {
   border-radius: var(--radius-sm);
 }
 
+/* ── Wake Up Notice ── */
+.wake-up-notice {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(40, 116, 240, 0.2);
+  animation: fadeIn 0.5s ease-out both;
+  box-shadow: var(--shadow-sm);
+}
+
+.wake-up-notice span {
+  display: flex;
+}
+
+@media (max-width: 480px) {
+  .wake-up-notice {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+}
+
 /* ── Toast Override ── */
 .Toastify__toast {
   font-family: var(--font) !important;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getProducts } from '../services/api';
 import ProductCard from '../components/ProductCard';
-import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
+import { FiChevronRight, FiChevronLeft, FiInfo } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { getOptimizedImage } from '../utils/imageUtils';
 import './Home.css';
@@ -19,23 +19,50 @@ export default function Home() {
   });
   // If we already have products loaded, don't show the loading skeleton at all
   const [loading, setLoading] = useState(() => !localStorage.getItem('flipkart_home_products'));
+  const [showWakeUpMessage, setShowWakeUpMessage] = useState(false);
   const [currentBannerGroup, setCurrentBannerGroup] = useState(0);
 
   useEffect(() => {
+    let timer;
+    if (loading) {
+      timer = setTimeout(() => setShowWakeUpMessage(true), 2500);
+    }
+
     // SWR: Fetch fresh data silently behind the scenes
     getProducts({ page: 1, limit: 20 })
       .then(({ data }) => {
-        const shuffled = (data.products || []).sort(() => 0.5 - Math.random());
-        setProducts(shuffled);
-        localStorage.setItem('flipkart_home_products', JSON.stringify(shuffled));
+        const rawProducts = data.products || [];
+        
+        setProducts(prevProducts => {
+          if (prevProducts.length === 0) {
+            // First time load: Shuffle for variety
+            const shuffled = [...rawProducts].sort(() => 0.5 - Math.random());
+            localStorage.setItem('flipkart_home_products', JSON.stringify(shuffled));
+            return shuffled;
+          } else {
+            // Smooth Update: Keep the existing order, but update the data (price, stock, etc.)
+            const freshMap = new Map(rawProducts.map(p => [p.id, p]));
+            const updatedProducts = prevProducts.map(p => freshMap.get(p.id) || p);
+            localStorage.setItem('flipkart_home_products', JSON.stringify(updatedProducts));
+            return updatedProducts;
+          }
+        });
       })
       .catch(() => {
         if (!localStorage.getItem('flipkart_home_products')) {
           setProducts([]);
         }
       })
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => {
+        setLoading(false);
+        setShowWakeUpMessage(false);
+        if (timer) clearTimeout(timer);
+      });
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [loading]);
 
   // Compute dynamic banners from products (take first 6)
   const bannerProducts = products.length >= 6 ? products.slice(0, 6) : [];
@@ -134,6 +161,12 @@ export default function Home() {
 
       {/* ── Deals Section ── */}
       <section className="deals-section container" style={{ marginTop: '24px' }}>
+        {showWakeUpMessage && (
+          <div className="wake-up-notice scale-in">
+            <FiInfo size={20} />
+            <span>Almost there! Waking up the server for your fresh deals...</span>
+          </div>
+        )}
         <div className="section-header">
           <h2 className="section-title">Deals of the Day</h2>
           <Link to="/products" className="section-view-all">

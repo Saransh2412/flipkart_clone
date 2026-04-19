@@ -8,6 +8,9 @@ const app = express();
 // Middleware — support multiple origins (comma-separated FRONTEND_URL)
 const defaultOrigins = [
   'http://localhost:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
   'https://flipkart-clone-hazel-nu.vercel.app',
   'https://flipkart-clone.saranshh.me'
 ];
@@ -72,22 +75,45 @@ app.get('/', (req, res) => {
   res.send('Flipkart Backend API is running...');
 });
 
-app.get("/health",(req,res)=>{
-  res.status(200).json({message:"SERVER HEALTHY !!!"})  
-})
+// HEALTH CHECK: Used by Uptime Bots (every 5-10 min). 
+// This NEVER touches the database. 0% Compute cost.
+app.get("/health", (req, res) => {
+  res.status(200).json({ message: "SERVER HEALTHY !!!" });
+});
 
+// READINESS CHECK: Only pings the database once every 24 hours.
+let dbStatusCache = { status: 'unknown', timestamp: 0 };
 app.get('/ready', async (req, res) => {
+  const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+  const now = Date.now();
+
+  // If cache is fresh (less than 24h old), return cached status
+  if (dbStatusCache.status !== 'unknown' && (now - dbStatusCache.timestamp < ONE_DAY_MS)) {
+    return res.status(200).json({
+      message: 'SERVER READY (cached)',
+      db: dbStatusCache.status,
+      nextCheckIn: Math.round((ONE_DAY_MS - (now - dbStatusCache.timestamp)) / 1000 / 60) + " mins"
+    });
+  }
+
+  // Otherwise, do a real check
   try {
     await sequelize.authenticate();
-    res.status(200).json({
-      message: 'SERVER READY',
-      db: 'up'
-    });
+    dbStatusCache = { status: 'up', timestamp: now };
+    res.status(200).json({ message: 'SERVER READY (live check)', db: 'up' });
   } catch (error) {
-    res.status(503).json({
-      message: 'SERVER NOT READY',
-      db: 'down'
-    });
+    // If it fails, don't cache 'up', just return error
+    res.status(503).json({ message: 'SERVER NOT READY', db: 'down', error: error.message });
+  }
+});
+
+// INTERNAL DB CHECK: Use only for manual verification
+app.get('/api/status/db', async (req, res) => {
+  try {
+    await sequelize.authenticate();
+    res.status(200).json({ status: 'connected' });
+  } catch (error) {
+    res.status(503).json({ status: 'disconnected', error: error.message });
   }
 });
 

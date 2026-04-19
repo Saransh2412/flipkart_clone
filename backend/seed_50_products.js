@@ -144,9 +144,7 @@ async function seed() {
     for (const product of existingProducts) {
       const imgs = product.images || [];
       // Check if images are missing or use placeholder URLs
-      const needsUpdate = imgs.length === 0 || imgs.some(img => 
-        img.image_url.includes('placeholder') || img.image_url.includes('placehold')
-      );
+      const needsUpdate = true; // FORCE UPDATE to restore all images
 
       if (needsUpdate) {
         // Delete old placeholder images

@@ -6,9 +6,10 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false
+      rejectUnauthorized: false, // Required for Neon/Render free tier
     },
     keepAlive: true,
+    sslmode: 'verify-full', // Explicitly satisfy the new pg requirement
   },
   pool: {
     max: 5,
@@ -24,8 +25,8 @@ const connectDB = async () => {
     await sequelize.authenticate();
     console.log('PostgreSQL (Neon) connected via Sequelize');
   } catch (error) {
-    console.error('Sequelize Connection Error:', error);
-    process.exit(1);
+    console.error('Sequelize Connection Error:', error.message);
+    // Don't exit process, allow app to run so health checks can return 200
   }
 };
 

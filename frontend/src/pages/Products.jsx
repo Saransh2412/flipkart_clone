@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getProducts } from '../services/api';
 import ProductCard from '../components/ProductCard';
-import { FiSearch, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiSearch, FiChevronLeft, FiChevronRight, FiInfo } from 'react-icons/fi';
 import './Products.css';
 
 const CATEGORIES = ['All', 'Electronics', 'Fashion', 'Appliances', 'Home & Furniture', 'Books', 'Toys & Games', 'Sports & Outdoors', 'Beauty & Personal Care', 'Automotive', 'Groceries'];
@@ -11,6 +11,7 @@ export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showWakeUpMessage, setShowWakeUpMessage] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -22,6 +23,8 @@ export default function Products() {
 
   useEffect(() => {
     setLoading(true);
+    let timer = setTimeout(() => setShowWakeUpMessage(true), 2500);
+
     const params = { page, limit: 12 };
     if (search) params.search = search;
     if (category) params.category = category;
@@ -33,7 +36,15 @@ export default function Products() {
         setTotal(data.total || 0);
       })
       .catch(() => setProducts([]))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        setShowWakeUpMessage(false);
+        if (timer) clearTimeout(timer);
+      });
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [search, category, page]);
 
   const handleSearchSubmit = (e) => {
@@ -116,6 +127,13 @@ export default function Products() {
             </h2>
             <span className="products-count">{total} results</span>
           </div>
+
+          {showWakeUpMessage && (
+            <div className="wake-up-notice scale-in">
+              <FiInfo size={20} />
+              <span>Almost there! Waking up the server...</span>
+            </div>
+          )}
 
           {loading ? (
             <div className="products-grid">
